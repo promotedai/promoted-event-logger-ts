@@ -1,10 +1,8 @@
-# impression-tracker-react-hook
+# promoted-event-logger-ts
 
-This library is used to track impressions using a react useImpressionTracker hook.
+This library is used to simplify browser-side logging.
 
 ## Features
-
-
 
 Uses
 - [TypeScript](https://www.typescriptlang.org/) support
