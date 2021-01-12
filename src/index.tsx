@@ -146,7 +146,7 @@ export class EventLogger {
   private handleLogError: (err: Error) => void;
   private snowplow: (...args: any[]) => void;
   private localStorage?: LocalStorage;
-  userSessionLocalStorageKey: string;
+  private userSessionLocalStorageKey: string;
   private userHashLocalStorageKey: string;
 
   /**

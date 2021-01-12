@@ -1,10 +1,13 @@
 {
   "name": "promoted-event-logger-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Logging utility for Promoted Metrics API",
-  "main": "promoted-event-logger.umd.js",
-  "module": "promoted-event-logger.esm.js",
+  "main": "promoted-event-logger-ts.umd.js",
+  "module": "promoted-event-logger-ts.esm.js",
   "typings": "index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prettier": "prettier '**/*.{js,ts}' --ignore-path ./.prettierignore",
     "types": "tsc --noEmit",
