@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.2...v1.1.3) (2021-01-12)
+
+
+### Bug Fixes
+
+* another rollup attempt ([fd98ce5](https://github.com/promotedai/promoted-event-logger-ts/commit/fd98ce514374b1eec8292a1408c81fdf4e77dd65))
+
 ## [1.1.2](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.1...v1.1.2) (2021-01-12)
 
 
