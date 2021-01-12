@@ -21,10 +21,12 @@ export default [
       typescript({
         typescript: require('typescript'),
       }),
+      /*
       babel({
           exclude: 'node_modules/**',
           extensions,
       }),
+      */
       postcss({
         modules: true,
         plugins: [],
@@ -40,11 +42,14 @@ export default [
         baseContents: (pkg) => ({
           ...pkg,
           name: pkg.name,
+          main: `${pkg.name}.umd.js`,
+          module: `${pkg.name}.esm.js`,
+          typings: `index.d.ts`,
           scripts: undefined,
           dependencies: {},
           devDependencies: {},
           peerDependencies,
-          private: false,
+          private: true,
           config: undefined,
         }),
       }),
@@ -53,14 +58,14 @@ export default [
     output: [
       {
         name: pkg.name,
-        file: `dist/${pkg.main}`,
+        file: `dist/${pkg.name}.umd.js`,
         format: 'umd',
         globals: {
           react: 'react',
         },
         sourcemap: true,
       },
-      { file: `dist/${pkg.module}`, format: 'es', sourcemap: true },
+      { file: `dist/${pkg.name}.esm.js`, format: 'es', sourcemap: true },
     ],
   },
 ];
