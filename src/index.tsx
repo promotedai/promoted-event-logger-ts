@@ -172,7 +172,7 @@ export class EventLogger {
   /**
    * Returns the User IGLU Schema URL.  As a function to delay string construction.
    */
-  private getUserIgluSchema2() {
+  private getUserIgluSchema() {
     if (!this.userIgluSchema) {
       this.userIgluSchema = `iglu:ai.promoted.${this.platformName}/user/jsonschema/1-0-0`;
     }
@@ -228,7 +228,7 @@ export class EventLogger {
   }
 
   innerLogUser(cf: any, user: User) {
-    const schema = this.getUserIgluSchema2();
+    const schema = this.getUserIgluSchema();
     try {
       const domainUserInfo = cf.getDomainUserInfo();
       const sessionId = domainUserInfo[6];
