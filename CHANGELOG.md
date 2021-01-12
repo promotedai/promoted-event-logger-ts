@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.4...v1.1.5) (2021-01-12)
+
+
+### Bug Fixes
+
+* 'window is not defined' ([bb2886d](https://github.com/promotedai/promoted-event-logger-ts/commit/bb2886df44afb699dd42e5700f56cb5a2c009a20))
+
 ## [1.1.4](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.3...v1.1.4) (2021-01-12)
 
 
