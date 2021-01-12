@@ -49,7 +49,6 @@ export default [
           dependencies: {},
           devDependencies: {},
           peerDependencies,
-          private: true,
           config: undefined,
         }),
       }),

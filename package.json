@@ -1,6 +1,6 @@
 {
   "name": "promoted-event-logger-ts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Logging utility for Promoted Metrics API",
   "scripts": {
     "prettier": "prettier '**/*.{js,ts}' --ignore-path ./.prettierignore",
