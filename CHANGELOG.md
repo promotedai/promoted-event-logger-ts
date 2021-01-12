@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.3...v1.1.4) (2021-01-12)
+
+
+### Bug Fixes
+
+* add missing dependency to deploy ([8120f04](https://github.com/promotedai/promoted-event-logger-ts/commit/8120f04cb749b2bcd06a26485b686866523c527b))
+
 ## [1.1.3](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.2...v1.1.3) (2021-01-12)
 
 
