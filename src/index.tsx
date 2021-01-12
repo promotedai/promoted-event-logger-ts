@@ -156,10 +156,14 @@ export class EventLogger {
     this.platformName = props.platformName;
     this.handleLogError = props.handleLogError;
     // @ts-expect-error window does not have snowplow on it.
-    this.snowplow = props.snowplow || (typeof window !== 'undefined' && window?.snowplow);
-    if (!this.snowplow) {
-      throw Error(`snowplow must either be set of accessible on window`);
-    }
+    const sp = props.snowplow || (typeof window !== 'undefined' && window?.snowplow);
+    this.snowplow = (...args: any[]) => {
+      // Delay the error in case the client is using NextJS.
+      if (!this.snowplow) {
+        throw Error(`snowplow needs to be set on EventLogger constructor arguments or accessible on window`);
+      }
+      sp(...args);
+    };
     this.localStorage = props.localStorage;
     if (this.localStorage === undefined && typeof window !== 'undefined') {
       this.localStorage = window?.localStorage;
