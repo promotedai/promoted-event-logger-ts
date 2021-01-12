@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import hash from 'object-hash';
 
 /**
@@ -270,13 +269,6 @@ export class EventLogger {
     } catch (error) {
       this.handleLogError(error);
     }
-  }
-
-  /**
-   * Returns a new UUID.
-   */
-  createInsertionId() {
-    return uuid();
   }
 
   /**
