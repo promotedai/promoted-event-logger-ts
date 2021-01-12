@@ -156,13 +156,13 @@ export class EventLogger {
     this.platformName = props.platformName;
     this.handleLogError = props.handleLogError;
     // @ts-expect-error window does not have snowplow on it.
-    this.snowplow = props.snowplow || (window && window?.snowplow);
+    this.snowplow = props.snowplow || (typeof window !== 'undefined' && window?.snowplow);
     if (!this.snowplow) {
       throw Error(`snowplow must either be set of accessible on window`);
     }
     this.localStorage = props.localStorage;
-    if (this.localStorage === undefined) {
-      this.localStorage = window && window?.localStorage;
+    if (this.localStorage === undefined && typeof window !== 'undefined') {
+      this.localStorage = window?.localStorage;
     }
     this.userSessionLocalStorageKey =
       props.userSessionLocalStorageKey !== undefined
