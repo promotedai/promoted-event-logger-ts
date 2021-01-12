@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.0...v1.1.1) (2021-01-12)
+
+
+### Bug Fixes
+
+* package main ([5b64ab5](https://github.com/promotedai/promoted-event-logger-ts/commit/5b64ab5ca87935df8707d11dba9bd89715513ee3))
+
 # [1.1.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.0.0...v1.1.0) (2021-01-12)
 
 
