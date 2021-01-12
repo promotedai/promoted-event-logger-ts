@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.7...v1.1.8) (2021-01-12)
+
+
+### Bug Fixes
+
+* remove uuid dependency ([f8a6623](https://github.com/promotedai/promoted-event-logger-ts/commit/f8a6623f28fc623d4dee684013ebed3941ae1105))
+
 ## [1.1.7](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.6...v1.1.7) (2021-01-12)
 
 
