@@ -1,6 +1,6 @@
 {
   "name": "promoted-event-logger-ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Logging utility for Promoted Metrics API",
   "main": "promoted-event-logger.umd.js",
   "module": "promoted-event-logger.esm.js",
