@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.6...v1.1.7) (2021-01-12)
+
+
+### Bug Fixes
+
+* attempt fix of snowplow nextjs error ([2ccc8ad](https://github.com/promotedai/promoted-event-logger-ts/commit/2ccc8ad2f4ac490735126c5f2c2af77b1c14611f))
+
 ## [1.1.6](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.5...v1.1.6) (2021-01-12)
 
 
