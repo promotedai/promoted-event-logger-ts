@@ -8,6 +8,7 @@ import generatePackageJson from 'rollup-plugin-generate-package-json';
 import pkg from './package.json';
 import { resolve } from 'path';
 
+const dependencies = pkg.config.lib.dependencies;
 const peerDependencies = pkg.config.lib.peerDependencies;
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
@@ -46,7 +47,7 @@ export default [
           module: `${pkg.name}.esm.js`,
           typings: `index.d.ts`,
           scripts: undefined,
-          dependencies: {},
+          dependencies: dependencies,
           devDependencies: {},
           peerDependencies,
           config: undefined,
