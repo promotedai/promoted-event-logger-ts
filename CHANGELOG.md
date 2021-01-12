@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.0.0...v1.1.0) (2021-01-12)
+
+
+### Features
+
+* increment version for readme ([6e3e2ad](https://github.com/promotedai/promoted-event-logger-ts/commit/6e3e2ad4d1fc4699fad3d185f31453f6abf22308))
+
 # 1.0.0 (2021-01-12)
 
 
