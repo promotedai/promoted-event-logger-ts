@@ -1,5 +1,4 @@
 import copy from 'rollup-plugin-copy';
-import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
@@ -8,7 +7,6 @@ import generatePackageJson from 'rollup-plugin-generate-package-json';
 import pkg from './package.json';
 import { resolve } from 'path';
 
-const dependencies = pkg.config.lib.dependencies;
 const peerDependencies = pkg.config.lib.peerDependencies;
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
@@ -22,12 +20,6 @@ export default [
       typescript({
         typescript: require('typescript'),
       }),
-      /*
-      babel({
-          exclude: 'node_modules/**',
-          extensions,
-      }),
-      */
       postcss({
         modules: true,
         plugins: [],
@@ -47,7 +39,6 @@ export default [
           module: `${pkg.name}.esm.js`,
           typings: `index.d.ts`,
           scripts: undefined,
-          dependencies: dependencies,
           devDependencies: {},
           peerDependencies,
           config: undefined,
