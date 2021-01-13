@@ -136,6 +136,7 @@ const getClickContexts = (impressionId: string | undefined) => {
  */
 export class EventLogger {
   private platformName: string;
+
   // Delay generation until needed since not all pages log all types of schemas.
   private userIgluSchema?: string;
   private requestIgluSchema?: string;
