@@ -132,7 +132,7 @@ const getClickContexts = (impressionId: string | undefined) => {
   }
 };
 
-const getPageViewContexts = (view: View) => {
+export const getViewContexts = (view: View) => {
   if (view) {
     return [
       {
@@ -279,7 +279,7 @@ export class EventLogger {
    */
   logView(view: View) {
     try {
-      this.snowplow('trackPageView', null, getPageViewContexts(view));
+      this.snowplow('trackPageView', null, getViewContexts(view));
     } catch (error) {
       this.handleLogError(error);
     }
