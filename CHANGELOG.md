@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.8...v1.2.0) (2021-01-17)
+
+
+### Features
+
+* page context v2 ([1925f57](https://github.com/promotedai/promoted-event-logger-ts/commit/1925f57b7909a5fe49467e55aad54802ee985dc2))
+
 ## [1.1.8](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.7...v1.1.8) (2021-01-12)
 
 
