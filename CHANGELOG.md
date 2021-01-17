@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.2.0...v1.3.0) (2021-01-17)
+
+
+### Features
+
+* export get view contexts ([91c9c59](https://github.com/promotedai/promoted-event-logger-ts/commit/91c9c598c5ff0e0bc87ed2621b1e1d953103adee))
+
 # [1.2.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.1.8...v1.2.0) (2021-01-17)
 
 
