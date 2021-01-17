@@ -1,4 +1,4 @@
-import { Click, EventLogger, Impression, Insertion, Request, User } from '.';
+import { Click, EventLogger, Impression, Insertion, Request, User, View } from '.';
 
 const platformName = 'test';
 
@@ -52,7 +52,6 @@ describe('logUser', () => {
     });
   });
 
-  /*
   it('error', () => {
     const snowplow = jest.fn(() => {
       throw 'Failed';
@@ -66,16 +65,74 @@ describe('logUser', () => {
       localStorage: mockLocalStorage(),
     });
 
-    const request: Request = {
+    const user = {
       common: {
-        requestId: 'abc-xyz',
+        logUserId: 'log-user-id',
+      },
+    } as User;
+    const cf = {
+      getDomainUserInfo: () => {
+        return [, , , , , , 'session-id1'];
+      },
+    };
+    expect(() => logger.innerLogUser(cf, user)).toThrow(/^Inner fail: Failed$/);
+  });
+});
+
+describe('logView', () => {
+  it('success', () => {
+    const snowplow = jest.fn();
+    const logger = new EventLogger({
+      platformName,
+      handleLogError: (err: Error) => {
+        throw err;
+      },
+      snowplow,
+      localStorage: mockLocalStorage(),
+    });
+
+    const view = {
+      common: {
         useCase: 'SEARCH',
       },
-      experimentOneGroup: 1,
-    };
-    expect(() => logger.logRequest(request)).toThrow(/^Inner fail: Failed$/);
+    } as View;
+    logger.logView(view);
+
+    expect(snowplow.mock.calls.length).toBe(1);
+    expect(snowplow.mock.calls[0][0]).toEqual('trackPageView');
+    expect(snowplow.mock.calls[0][1]).toEqual(null);
+    expect(snowplow.mock.calls[0][2]).toEqual([
+      {
+        data: {
+          common: {
+            useCase: 'SEARCH',
+          },
+        },
+        schema: 'iglu:ai.promoted/pageview_cx/jsonschema/2-0-0',
+      },
+    ]);
   });
-  */
+
+  it('error', () => {
+    const snowplow = jest.fn(() => {
+      throw 'Failed';
+    });
+    const logger = new EventLogger({
+      platformName,
+      handleLogError: (err: Error) => {
+        throw 'Inner fail: ' + err;
+      },
+      snowplow,
+      localStorage: mockLocalStorage(),
+    });
+
+    const view = {
+      common: {
+        useCase: 'SEARCH',
+      },
+    } as View;
+    expect(() => logger.logView(view)).toThrow(/^Inner fail: Failed$/);
+  });
 });
 
 describe('logRequest', () => {

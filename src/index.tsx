@@ -58,6 +58,10 @@ export interface User {
   common: {};
 }
 
+export interface View {
+  common: {};
+}
+
 export interface CommonRequest {
   // viewId gets filled in on the server.
   requestId: string;
@@ -125,6 +129,19 @@ const getClickContexts = (impressionId: string | undefined) => {
     ];
   } else {
     return undefined;
+  }
+};
+
+const getPageViewContexts = (view: View) => {
+  if (view) {
+    return [
+      {
+        schema: 'iglu:ai.promoted/pageview_cx/jsonschema/2-0-0',
+        data: view,
+      },
+    ];
+  } else {
+    return [];
   }
 };
 
@@ -252,6 +269,17 @@ export class EventLogger {
         this.localStorage?.setItem(this.userSessionLocalStorageKey, sessionId);
         this.localStorage?.setItem(this.userHashLocalStorageKey, newUserHash);
       }
+    } catch (error) {
+      this.handleLogError(error);
+    }
+  }
+
+  /**
+   * Logs the View object.
+   */
+  logView(view: View) {
+    try {
+      this.snowplow('trackPageView', null, getPageViewContexts(view));
     } catch (error) {
       this.handleLogError(error);
     }
