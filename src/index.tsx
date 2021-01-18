@@ -3,11 +3,16 @@ import hash from 'object-hash';
 /**
  * Constructor arguments for EventLogger.
  */
-export interface EventLoggerProps {
+export interface EventLoggerArguments {
   /**
    * The name of your Platform in Promoted's configuration.
    */
   platformName: string;
+
+  /**
+   * A way to turn off logging.  Defaults to true.
+   */
+  enabled?: boolean;
 
   /*
   Indicates how to handle errors.
@@ -146,12 +151,92 @@ export const getViewContexts = (view: View) => {
 };
 
 /**
+ * Interface for EventLogger.  The logger better handles errors and
+ * conditionals that are encountered during development.
+ */
+interface EventLogger {
+  /**
+   * Logs `user` depending on the configuration.  The default
+   * configuration is log once per session.  Stores data in localStorage
+   * to reduce the number of actual logging calls (hence `maybe`).
+   * Warning: the call will modify the input `user`.  Clients must copy the object.
+   * @param {User} the call will modify the object
+   */
+  maybeLogUser(user: User): void;
+
+  /**
+   * Logs `view`.
+   */
+  logView(view: View): void;
+
+  /**
+   * Logs `request`.
+   */
+  logRequest(request: Request): void;
+
+  /**
+   * Logs `insertion`.
+   */
+  logInsertion(insertion: Insertion): void;
+
+  /**
+   * Logs `impression`.
+   */
+  logImpression(impression: Impression): void;
+
+  /**
+   * Logs `click`.
+   */
+  logClick(click: Click): void;
+}
+
+export const createEventLogger = (args: EventLoggerArguments) => {
+  if (args.enabled === undefined || args.enabled) {
+    return new EventLoggerImpl(args);
+  } else {
+    return new NoopEventLogger();
+  }
+};
+
+/**
  * A utility class for logging events.
  *
  * Warning: This class modifies the inputs.  We avoid creating duplicate objects
  * to reduce memory pressure.
  */
-export class EventLogger {
+export class NoopEventLogger implements EventLogger {
+  maybeLogUser() {
+    /* No op. */
+  }
+
+  logView() {
+    /* No op. */
+  }
+
+  logRequest() {
+    /* No op. */
+  }
+
+  logInsertion() {
+    /* No op. */
+  }
+
+  logImpression() {
+    /* No op. */
+  }
+
+  logClick() {
+    /* No op. */
+  }
+}
+
+/**
+ * A utility class for logging events.
+ *
+ * Warning: This class modifies the inputs.  We avoid creating duplicate objects
+ * to reduce memory pressure.
+ */
+export class EventLoggerImpl implements EventLogger {
   private platformName: string;
 
   // Delay generation until needed since not all pages log all types of schemas.
@@ -167,13 +252,13 @@ export class EventLogger {
   private userHashLocalStorageKey: string;
 
   /**
-   * @params {EventLoggerProps} props The arguments for the logger.
+   * @params {EventLoggerArguments} args The arguments for the logger.
    */
-  public constructor(props: EventLoggerProps) {
-    this.platformName = props.platformName;
-    this.handleLogError = props.handleLogError;
+  public constructor(args: EventLoggerArguments) {
+    this.platformName = args.platformName;
+    this.handleLogError = args.handleLogError;
     // @ts-expect-error window does not have snowplow on it.
-    const sp = props.snowplow || (typeof window !== 'undefined' && window?.snowplow);
+    const sp = args.snowplow || (typeof window !== 'undefined' && window?.snowplow);
     this.snowplow = (...args: any[]) => {
       // Delay the error in case the client is using NextJS.
       if (!this.snowplow) {
@@ -181,16 +266,16 @@ export class EventLogger {
       }
       sp(...args);
     };
-    this.localStorage = props.localStorage;
+    this.localStorage = args.localStorage;
     if (this.localStorage === undefined && typeof window !== 'undefined') {
       this.localStorage = window?.localStorage;
     }
     this.userSessionLocalStorageKey =
-      props.userSessionLocalStorageKey !== undefined
-        ? props.userSessionLocalStorageKey
+      args.userSessionLocalStorageKey !== undefined
+        ? args.userSessionLocalStorageKey
         : DEFAULT_USER_SESSION_LOCAL_STORAGE_KEY;
     this.userHashLocalStorageKey =
-      props.userHashLocalStorageKey !== undefined ? props.userHashLocalStorageKey : DEFAULT_USER_HASH_LOCAL_STORAGE_KEY;
+      args.userHashLocalStorageKey !== undefined ? args.userHashLocalStorageKey : DEFAULT_USER_HASH_LOCAL_STORAGE_KEY;
   }
 
   /**
@@ -233,13 +318,6 @@ export class EventLogger {
     return this.impressionIgluSchema;
   }
 
-  // TODO - also re-log if the user (or hash of the) object changes.
-  /**
-   * Logs the user data depending on the configuration.  The default
-   * configuration is log once per session.
-   * Warning: the call will modify the user data.  Clients must copy the object.
-   * @param {User} the call will modify the object
-   */
   maybeLogUser(user: User) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
@@ -274,9 +352,6 @@ export class EventLogger {
     }
   }
 
-  /**
-   * Logs the View object.
-   */
   logView(view: View) {
     try {
       this.snowplow('trackPageView', null, getViewContexts(view));
@@ -285,9 +360,6 @@ export class EventLogger {
     }
   }
 
-  /**
-   * Logs the Request object.  Modifies Request to include common.requestId.
-   */
   logRequest(request: Request) {
     try {
       // Q - should I add viewId here on the server?
@@ -300,9 +372,6 @@ export class EventLogger {
     }
   }
 
-  /**
-   * Logs the Insertion object.
-   */
   logInsertion(insertion: Insertion) {
     try {
       this.snowplow('trackUnstructEvent', {
@@ -314,9 +383,6 @@ export class EventLogger {
     }
   }
 
-  /**
-   * Logs the Impression object.
-   */
   logImpression(impression: Impression) {
     try {
       this.snowplow('trackUnstructEvent', {
