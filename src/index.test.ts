@@ -1,4 +1,4 @@
-import { Click, EventLogger, Impression, Insertion, Request, User, View } from '.';
+import { Click, createEventLogger, EventLoggerImpl, Impression, Insertion, Request, User, View } from '.';
 
 const platformName = 'test';
 
@@ -8,6 +8,52 @@ const mockLocalStorage = (items = {}) => ({
   setItem: (key: string, value: string) => (items[key] = value),
 });
 
+describe('disabled logging', () => {
+  it('disable', () => {
+    const snowplow = jest.fn();
+    const localStorage = mockLocalStorage({
+      'p-us': undefined,
+      'p-uh': undefined,
+    });
+    const logger = createEventLogger({
+      enabled: false,
+      platformName,
+      handleLogError: (err: Error) => {
+        throw err;
+      },
+      snowplow,
+      localStorage,
+    });
+
+    logger.maybeLogUser({
+      common: {},
+    });
+    logger.logView({
+      common: {},
+    });
+    logger.logRequest({
+      common: {
+        requestId: 'requestId1',
+      },
+    });
+    logger.logInsertion({
+      common: {
+        insertionId: 'insertionId1',
+      },
+    });
+    logger.logImpression({
+      common: {
+        impressionId: 'impressionId1',
+      },
+    });
+    logger.logClick({
+      impressionId: 'impressionId1',
+      targetUrl: 'localhost/target',
+      elementId: 'button-id',
+    });
+  });
+});
+
 describe('logUser', () => {
   it('success', () => {
     const snowplow = jest.fn();
@@ -15,7 +61,8 @@ describe('logUser', () => {
       'p-us': undefined,
       'p-uh': undefined,
     });
-    const logger = new EventLogger({
+    // Use impl so we get access to innerLogUser.
+    const logger = new EventLoggerImpl({
       platformName,
       handleLogError: (err: Error) => {
         throw err;
@@ -56,7 +103,8 @@ describe('logUser', () => {
     const snowplow = jest.fn(() => {
       throw 'Failed';
     });
-    const logger = new EventLogger({
+    // Use impl so we get access to innerLogUser.
+    const logger = new EventLoggerImpl({
       platformName,
       handleLogError: (err: Error) => {
         throw 'Inner fail: ' + err;
@@ -82,7 +130,7 @@ describe('logUser', () => {
 describe('logView', () => {
   it('success', () => {
     const snowplow = jest.fn();
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw err;
@@ -117,7 +165,7 @@ describe('logView', () => {
     const snowplow = jest.fn(() => {
       throw 'Failed';
     });
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw 'Inner fail: ' + err;
@@ -138,7 +186,7 @@ describe('logView', () => {
 describe('logRequest', () => {
   it('success', () => {
     const snowplow = jest.fn();
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw err;
@@ -174,7 +222,7 @@ describe('logRequest', () => {
     const snowplow = jest.fn(() => {
       throw 'Failed';
     });
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw 'Inner fail: ' + err;
@@ -197,7 +245,7 @@ describe('logRequest', () => {
 describe('logInsertion', () => {
   it('success', () => {
     const snowplow = jest.fn();
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw err;
@@ -237,7 +285,7 @@ describe('logInsertion', () => {
     const snowplow = jest.fn(() => {
       throw 'Failed';
     });
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw 'Inner fail: ' + err;
@@ -262,7 +310,7 @@ describe('logInsertion', () => {
 describe('logImpression', () => {
   it('success', () => {
     const snowplow = jest.fn();
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw err;
@@ -296,7 +344,7 @@ describe('logImpression', () => {
     const snowplow = jest.fn(() => {
       throw 'Failed';
     });
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw 'Inner fail: ' + err;
@@ -318,7 +366,7 @@ describe('logImpression', () => {
 describe('logClick', () => {
   it('success', () => {
     const snowplow = jest.fn();
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw err;
@@ -355,7 +403,7 @@ describe('logClick', () => {
     const snowplow = jest.fn(() => {
       throw 'Failed';
     });
-    const logger = new EventLogger({
+    const logger = createEventLogger({
       platformName,
       handleLogError: (err: Error) => {
         throw 'Inner fail: ' + err;
