@@ -162,7 +162,7 @@ interface EventLogger {
    * Warning: the call will modify the input `user`.  Clients must copy the object.
    * @param {User} the call will modify the object
    */
-  maybeLogUser(user: User): void;
+  logUser(user: User): void;
 
   /**
    * Logs `view`.
@@ -205,7 +205,7 @@ export const createEventLogger = (args: EventLoggerArguments) => {
  * to reduce memory pressure.
  */
 export class NoopEventLogger implements EventLogger {
-  maybeLogUser() {
+  logUser() {
     /* No op. */
   }
 
@@ -318,7 +318,7 @@ export class EventLoggerImpl implements EventLogger {
     return this.impressionIgluSchema;
   }
 
-  maybeLogUser(user: User) {
+  logUser(user: User) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     // This version of the snowplow method allows us to get access to `cf`.
