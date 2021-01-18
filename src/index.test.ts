@@ -25,7 +25,7 @@ describe('disabled logging', () => {
       localStorage,
     });
 
-    logger.maybeLogUser({
+    logger.logUser({
       common: {},
     });
     logger.logView({
