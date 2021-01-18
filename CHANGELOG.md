@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.3.0...v1.4.0) (2021-01-18)
+
+
+### Features
+
+* add easy disable arg ([dec5992](https://github.com/promotedai/promoted-event-logger-ts/commit/dec59926fd61e072d83945dcd2fb04a410d16c11))
+
 # [1.3.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.2.0...v1.3.0) (2021-01-17)
 
 
