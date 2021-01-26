@@ -113,6 +113,7 @@ export interface Click {
 // log calls.
 const DEFAULT_USER_SESSION_LOCAL_STORAGE_KEY = 'p-us';
 const DEFAULT_USER_HASH_LOCAL_STORAGE_KEY = 'p-uh';
+const DEBUG_LOCAL_STORAGE_KEY = 'p-debug';
 
 export interface LocalStorage {
   getItem: (key: string) => string | null;
@@ -238,6 +239,7 @@ export class NoopEventLogger implements EventLogger {
  */
 export class EventLoggerImpl implements EventLogger {
   private platformName: string;
+  private isDebugEnabled: boolean;
 
   // Delay generation until needed since not all pages log all types of schemas.
   private userIgluSchema?: string;
@@ -270,6 +272,7 @@ export class EventLoggerImpl implements EventLogger {
     if (this.localStorage === undefined && typeof window !== 'undefined') {
       this.localStorage = window?.localStorage;
     }
+    this.isDebugEnabled = this.localStorage?.getItem(DEBUG_LOCAL_STORAGE_KEY) === 'true';
     this.userSessionLocalStorageKey =
       args.userSessionLocalStorageKey !== undefined
         ? args.userSessionLocalStorageKey
@@ -321,6 +324,10 @@ export class EventLoggerImpl implements EventLogger {
   logUser(user: User) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
+    if (this.isDebugEnabled) {
+      console.log(`EventLogger.logUser`);
+    }
+
     // This version of the snowplow method allows us to get access to `cf`.
     this.snowplow(function () {
       // We use cf to get sessionId.
@@ -339,6 +346,11 @@ export class EventLoggerImpl implements EventLogger {
       const oldUserHash = this.localStorage?.getItem(this.userHashLocalStorageKey);
       // Only send the log events if the userId changes.
       const newUserHash = hash(user);
+      if (this.isDebugEnabled) {
+        console.log(
+          `EventLogger.logUser - sessionId=${sessionId}, oldSessionId=${oldSessionId}, newUserHash=${newUserHash}, oldUserHash=${oldUserHash}`
+        );
+      }
       if (sessionId !== oldSessionId || newUserHash !== oldUserHash) {
         this.snowplow('trackUnstructEvent', {
           schema,

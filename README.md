@@ -23,6 +23,17 @@ Uses
 - Lint the project: `npm run lint`
 - Run unit tests: `npm test` or `npm test`
 
+## When developing locally
+
+If you want to test local changes in an actual deployment, use `npm link`.
+
+1. Run `npm run updateLink`.
+4. Go to client directory and run `npm link promoted-event-logger-ts`.
+
+When you update `promoted-event-logger-ts`, run `npm run updateLink`.
+
+When you want to undo, use `npm unlink` in `promoted-event-logger-ts` and `npm unlink promoted-event-logger-ts` in the client directory.
+
 # Resources
 
 The base of this repository is a combination of the following repos:
