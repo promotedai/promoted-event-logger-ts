@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/promotedai/promoted-event-logger-ts/compare/v2.0.0...v2.0.1) (2021-01-26)
+
+
+### Bug Fixes
+
+* to push.  update readme ([32d790c](https://github.com/promotedai/promoted-event-logger-ts/commit/32d790cc8bcee109a3b73051e90d6986863491f2))
+
 # [2.0.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v1.4.0...v2.0.0) (2021-01-18)
 
 
