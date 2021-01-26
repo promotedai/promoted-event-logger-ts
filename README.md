@@ -34,6 +34,10 @@ When you update `promoted-event-logger-ts`, run `npm run updateLink`.
 
 When you want to undo, use `npm unlink` in `promoted-event-logger-ts` and `npm unlink promoted-event-logger-ts` in the client directory.
 
+## Deploy
+
+We use a GitHub action that runs semantic-release to determine how to update versions.  Just do a normal code review and this should work.  Depending on the message prefixes (e.g. `feat: `, `fix: `, `clean: `, `docs: `), it'll update the version appropriately.
+
 # Resources
 
 The base of this repository is a combination of the following repos:
