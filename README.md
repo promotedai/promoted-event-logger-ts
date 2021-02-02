@@ -32,7 +32,7 @@ If you want to test local changes in an actual deployment, use `npm link`.
 
 When you update `promoted-event-logger-ts`, run `npm run updateLink`.
 
-When you want to undo, use `npm unlink` in `promoted-event-logger-ts` and `npm unlink promoted-event-logger-ts` in the client directory.
+When you want to undo, use `npm unlink` in `promoted-event-logger-ts/dist` and `npm unlink promoted-event-logger-ts` in the client directory.
 
 ## Deploy
 
