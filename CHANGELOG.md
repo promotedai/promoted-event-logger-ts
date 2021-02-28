@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v2.0.1...v2.1.0) (2021-02-28)
+
+
+### Features
+
+* add log user cohort method ([26cbe84](https://github.com/promotedai/promoted-event-logger-ts/commit/26cbe8494cdd89d022bc7d76a1d416093c41cc9c))
+
 ## [2.0.1](https://github.com/promotedai/promoted-event-logger-ts/compare/v2.0.0...v2.0.1) (2021-01-26)
 
 
