@@ -1,4 +1,14 @@
-import { Click, createEventLogger, EventLoggerImpl, Impression, Insertion, Request, User, View } from '.';
+import {
+  Click,
+  CohortMembership,
+  createEventLogger,
+  EventLoggerImpl,
+  Impression,
+  Insertion,
+  Request,
+  User,
+  View,
+} from '.';
 
 const platformName = 'test';
 
@@ -26,6 +36,9 @@ describe('disabled logging', () => {
     });
 
     logger.logUser({
+      common: {},
+    });
+    logger.logCohortMembership({
       common: {},
     });
     logger.logView({
@@ -124,6 +137,62 @@ describe('logUser', () => {
       },
     };
     expect(() => logger.innerLogUser(cf, user)).toThrow(/^Inner fail: Failed$/);
+  });
+});
+
+describe('logCohortMembership', () => {
+  it('success', () => {
+    const snowplow = jest.fn();
+    const logger = createEventLogger({
+      platformName,
+      handleLogError: (err: Error) => {
+        throw err;
+      },
+      snowplow,
+      localStorage: mockLocalStorage(),
+    });
+
+    const cohortMembership = {
+      common: {
+        cohort_id: 'UNKNOWN_COHORT',
+        experimentGroup: 'EXPERIMENT',
+      },
+    } as CohortMembership;
+    logger.logCohortMembership(cohortMembership);
+
+    expect(snowplow.mock.calls.length).toBe(1);
+    expect(snowplow.mock.calls[0][0]).toEqual('trackUnstructEvent');
+    expect(snowplow.mock.calls[0][1]).toEqual({
+      schema: 'iglu:ai.promoted.test/cohortmembership/jsonschema/1-0-0',
+      data: {
+        common: {
+          cohort_id: 'UNKNOWN_COHORT',
+          experimentGroup: 'EXPERIMENT',
+        },
+      },
+    });
+  });
+
+  it('error', () => {
+    const snowplow = jest.fn(() => {
+      throw 'Failed';
+    });
+    const logger = createEventLogger({
+      platformName,
+      handleLogError: (err: Error) => {
+        throw 'Inner fail: ' + err;
+      },
+      snowplow,
+      localStorage: mockLocalStorage(),
+    });
+
+    const cohortMembership = {
+      common: {
+        cohort_id: 'UNKNOWN_COHORT',
+        experimentGroup: 'EXPERIMENT',
+      },
+    } as CohortMembership;
+    expect(() => logger.logCohortMembership(cohortMembership)).toThrow(/^Inner fail: Failed$/);
   });
 });
 

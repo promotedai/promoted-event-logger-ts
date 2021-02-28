@@ -63,6 +63,10 @@ export interface User {
   common: {};
 }
 
+export interface CohortMembership {
+  common: {};
+}
+
 export interface View {
   common: {};
 }
@@ -166,6 +170,11 @@ interface EventLogger {
   logUser(user: User): void;
 
   /**
+   * Logs `cohortMembership`.
+   */
+  logCohortMembership(cohortMembership: CohortMembership): void;
+
+  /**
    * Logs `view`.
    */
   logView(view: View): void;
@@ -210,6 +219,10 @@ export class NoopEventLogger implements EventLogger {
     /* No op. */
   }
 
+  logCohortMembership() {
+    /* No op. */
+  }
+
   logView() {
     /* No op. */
   }
@@ -243,6 +256,7 @@ export class EventLoggerImpl implements EventLogger {
 
   // Delay generation until needed since not all pages log all types of schemas.
   private userIgluSchema?: string;
+  private cohortMembershipIgluSchema?: string;
   private requestIgluSchema?: string;
   private insertionIgluSchema?: string;
   private impressionIgluSchema?: string;
@@ -289,6 +303,16 @@ export class EventLoggerImpl implements EventLogger {
       this.userIgluSchema = `iglu:ai.promoted.${this.platformName}/user/jsonschema/1-0-0`;
     }
     return this.userIgluSchema;
+  }
+
+  /**
+   * Returns the CohortMembership IGLU Schema URL.  As a function to delay string construction.
+   */
+  private getCohortMembershipIgluSchema() {
+    if (!this.cohortMembershipIgluSchema) {
+      this.cohortMembershipIgluSchema = `iglu:ai.promoted.${this.platformName}/cohortmembership/jsonschema/1-0-0`;
+    }
+    return this.cohortMembershipIgluSchema;
   }
 
   /**
@@ -359,6 +383,17 @@ export class EventLoggerImpl implements EventLogger {
         this.localStorage?.setItem(this.userSessionLocalStorageKey, sessionId);
         this.localStorage?.setItem(this.userHashLocalStorageKey, newUserHash);
       }
+    } catch (error) {
+      this.handleLogError(error);
+    }
+  }
+
+  logCohortMembership(cohortMembership: CohortMembership) {
+    try {
+      this.snowplow('trackUnstructEvent', {
+        schema: this.getCohortMembershipIgluSchema(),
+        data: cohortMembership,
+      });
     } catch (error) {
       this.handleLogError(error);
     }
