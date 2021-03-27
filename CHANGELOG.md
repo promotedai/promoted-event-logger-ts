@@ -1,3 +1,17 @@
+# [3.0.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v2.1.0...v3.0.0) (2021-03-27)
+
+
+### Bug Fixes
+
+* mark as deprecated ([cb2a977](https://github.com/promotedai/promoted-event-logger-ts/commit/cb2a977a30b88d24ef329145ee2d3c1437ae6312))
+
+
+### BREAKING CHANGES
+
+* - Increment version to make it easier to flag as deprecated.
+
+TESTING=unit tests
+
 # [2.1.0](https://github.com/promotedai/promoted-event-logger-ts/compare/v2.0.1...v2.1.0) (2021-02-28)
 
 
