@@ -1,3 +1,7 @@
+# Deprecated.  Used promoted-snowplow-logger instead 
+
+This package no longer works.
+
 # promoted-event-logger-ts
 
 This library is used to simplify browser-side logging.
