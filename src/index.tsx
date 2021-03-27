@@ -3,7 +3,7 @@ import hash from 'object-hash';
 /**
  * Constructor arguments for EventLogger.
  */
-export interface EventLoggerArguments {
+export interface EventLoggerArgumentsDeprecated {
   /**
    * The name of your Platform in Promoted's configuration.
    */
@@ -200,7 +200,7 @@ interface EventLogger {
   logClick(click: Click): void;
 }
 
-export const createEventLogger = (args: EventLoggerArguments) => {
+export const createEventLogger = (args: EventLoggerArgumentsDeprecated) => {
   if (args.enabled === undefined || args.enabled) {
     return new EventLoggerImpl(args);
   } else {
@@ -268,9 +268,9 @@ export class EventLoggerImpl implements EventLogger {
   private userHashLocalStorageKey: string;
 
   /**
-   * @params {EventLoggerArguments} args The arguments for the logger.
+   * @params {EventLoggerArgumentsDeprecated} args The arguments for the logger.
    */
-  public constructor(args: EventLoggerArguments) {
+  public constructor(args: EventLoggerArgumentsDeprecated) {
     this.platformName = args.platformName;
     this.handleLogError = args.handleLogError;
     // @ts-expect-error window does not have snowplow on it.
